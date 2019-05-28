@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import './vente.css'
 class Vente extends Component {
     state = {  }
     render() { 
@@ -63,8 +64,8 @@ class Vente extends Component {
                         </table>
                     </div>
                     <div style={{width:"90%",marginLeft:"auto",marginRight:"auto",marginBottom:"10px",backgroundColor:"white"}}>
-                        <div style={{backgroundColor:"#F7DF09",boxShadow:"2px 2px 2px 2px #474747",color:"white",width:"20%",display:"inline-block",marginLeft:"0px"}}><span>Total : 1000000</span></div>
-                        <div style={{width:"20%",display:"inline-block"}}><button className="btn btn-success">Valider</button></div>
+                        <div style={{backgroundColor:"#F7DF09",boxShadow:"2px 2px 2px 2px #474747",color:"white",width:"30%",display:"inline-block",marginTop:"10px",marginRight:"10px",marginBottom:"10px"}}><span>Total : 1000000</span></div>
+                        <div style={{width:"20%",display:"inline-block",marginTop:"10px",backgroundColor:"green",color:"white",marginBottom:"10px",boxShadow:"2px 2px 2px 2px #474747"}}><span>Valider</span></div>
                     </div>
                 </div>
             </div>

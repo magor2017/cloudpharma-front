@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import Content from './content';
 import {BrowserRouter as Router,Link,Route,Switch } from 'react-router-dom';
 import Vente from './vente';
+import './accueil.css';
 
 class Accueil extends Component {
     constructor(){
@@ -84,13 +85,13 @@ function P(){
                 <div style={{margin:"1.5em",width:"20%",display:"inline-block"}}>
                     <div style={{color:"#066A74",backgroundColor:"white",padding:"0.5em",textAlign:"center",borderRadius:"0.5em"}}>
                         <div><i class="fas fa-chart-line fa-2x"></i></div>
-                        <Link>Performance</Link>
+                        <Link><span>Performance</span></Link>
                     </div>
                 </div>
                 <div style={{margin:"1.5em",width:"20%",display:"inline-block"}}>
                     <div style={{color:"#066A74",backgroundColor:"white",padding:"0.5em",textAlign:"center",borderRadius:"0.5em"}}>
                         <div><i class="fas fa-chart-line fa-2x"></i></div>
-                        <Link>Performance</Link>
+                        <Link style={{width:"100%"}}><span>Performance</span></Link>
                     </div>
                 </div>
                 <div style={{margin:"1.5em",width:"20%",display:"inline-block"}}>
