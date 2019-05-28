@@ -20,7 +20,11 @@ function App() {
 }
 function Login(){
   return(
-    <p>login bi fiila</p>
+    <div>
+        <p>login bi fiila</p>
+        <Link to="/vendeur" >espace vendeur</Link>
+    </div>
+    
   )
 }
 

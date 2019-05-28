@@ -12,6 +12,7 @@ class Content extends Component {
                     <Route exact path="/" component={P} />
                     <Route exact path="/login/" component={Login} />
                     <Route exact path="/ac/" component={Ac} />
+                    <Route exact path="/vendeur/vente" component={Vente} />
             </Switch>
             
             
@@ -35,5 +36,10 @@ function Login(){
 function Ac(){
     return(
         <div>this is acc</div>
+    );
+}
+function Vente(){
+    return(
+        <div>vente ici</div>
     );
 }
