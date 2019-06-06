@@ -1,3 +1,16 @@
 span{
     word-wrap: break-word; 
 }
+.p{
+    position: absolute;
+}
+.liAutocomplete{
+    border:1px solid black;
+}
+.liAutocomplete:hover{
+    background-color: grey;
+    color:white;
+}
+.ulAutocomplete{
+
+}
