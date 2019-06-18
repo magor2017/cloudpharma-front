@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import Content from './content';
 import {BrowserRouter as Router,Link,Route,Switch } from 'react-router-dom';
+import ContentStock from '../stock/content'
 import Vente from './vente';
 import './accueil.css';
 
@@ -52,7 +53,8 @@ class Accueil extends Component {
                             <Route exact path="/vendeur" component={P} />
                             <Route exact path="/vendeur/login" component={Login} />
                             <Route exact path="/vendeur/ac" component={Ac} />
-                            <Route exact path="/vendeur/vente" component={Vente} />
+                            <Route exact path="/vendeur/content" component={Content} />
+                            <Route exact path="/vendeur/stock/contentstock" component={ContentStock} />
                         </Switch>
                     </div>
                 </div> 
@@ -73,13 +75,13 @@ function P(){
                 <div style={{margin:"1.5em",width:"20%",display:"inline-block"}}>
                     <div style={{color:"#066A74",backgroundColor:"white",padding:"0.5em",textAlign:"center",borderRadius:"0.5em"}}>
                         <div><i class="fas fa-shopping-cart fa-2x"></i></div>
-                        <Link to="/vendeur/vente">Vente</Link>
+                        <Link to="/vendeur/content">Vente</Link>
                     </div>
                 </div>
                 <div style={{margin:"1.5em",width:"20%",display:"inline-block"}}>
                     <div style={{color:"#066A74",backgroundColor:"white",padding:"0.5em",textAlign:"center",borderRadius:"0.5em"}}>
                         <div><i class="fas fa-dolly fa-2x"></i></div>
-                        <Link>Stock</Link>
+                        <Link to="/vendeur/stock/contentstock">Stock</Link>
                     </div>
                 </div>
                 <div style={{margin:"1.5em",width:"20%",display:"inline-block"}}>

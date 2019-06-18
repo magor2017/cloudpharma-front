@@ -25,21 +25,7 @@ span{
     border:2px solid white;
     text-align:center
 }
-#menu > div{
-    padding:10px;
-    width:15%;
-    display:inline-block;
-}
-#menu div:first-child{
-    background-color:white;
-    color:#1F838D;
-    margin-left:10%;
-}
-#menu div:last-child{
-    background-color:#1F838D;
-    color:white;
-    margin-left:1%;
-}
+
 #ajout{
     border:2px solid white;
     margin-top:10px;width:90%;
