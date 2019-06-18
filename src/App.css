@@ -32,3 +32,67 @@
   }
 }
 
+
+.container{
+    text-align: center;
+}
+
+.btncnrow{
+  margin-top:12%;
+}
+
+.btncnrow button{
+  padding-left: 30px;
+  padding-right: 30px;
+  border-radius: 0.5rem;
+  font-size: 1.5rem;
+  background-color: #3BF899;
+  color: white;
+  border:1px solid;
+}
+
+.vrtlinerow{
+  min-height: 5rem;
+  max-height: 5rem;
+}
+
+.vrtlinerow .colon2{
+  border-left: 1px solid white;
+}
+
+.col-4 span{
+  display: block;
+  min-width: 12rem;
+  max-width: 12rem;
+  min-height: 12rem;
+  max-height: 12rem;
+  background-color: rgba(255,255,255,0.2);
+  padding-top: 43%;
+  border-radius: 50%;
+  border: 0.2rem solid white;
+  color: white;
+}
+
+.servicesprens{
+  width: 80%;
+
+}
+
+.srvlinerow{
+   border: 1px solid white;
+   padding: 1.5rem;
+   border-radius: 1rem;
+}
+
+.srvlinerow input{
+     background-color: transparent;
+    border: 0px;
+    outline: none;
+    -webkit-box-shadow: none;
+    -moz-box-shadow: none;
+    box-shadow: none;
+    width:5px;
+    color:transparent;
+    cursor:default;
+  
+}
