@@ -26,7 +26,7 @@ class Login extends Component {
     	let body = {"login":log, "password": pass};
 
 		let defaultOptions = {
-			url:'http://localhost/bacamacBackend/index.php/reactjs',
+			url:'http://127.0.0.1:8000/login/auth',
 			method:'POST',
 			mode: 'cors',
 			headers:{
@@ -40,6 +40,41 @@ class Login extends Component {
 		})
     }
 
+	HeaderPostAction = ()=>{
+	  	fetch('http://127.0.0.1:8000/login/auth', {
+		  method: 'POST',
+		  body: {"datas": "datas"},
+		  headers : {
+				'Access-Control-Allow-Origin':'*'
+			},
+		}).then(res => res.text()).then(console.log).catch(console.log)
+	}
+
+    auth2 = () => {
+
+    	let config = {
+		  headers: {
+		    'Access-Control-Allow-Origin': '*'
+		  }
+		}
+		
+    	axios.post('http://127.0.0.1:8000/login/auth',{"prod":"prod"}, config).then(res =>{
+          if(res.status===200){
+              console.log(res.data.data);
+              //let data=JSON.parse(res.data.data.replace(/\'/g,'"'));
+              // let data=res.data.data;
+              // // console.log(data);
+              // this.setState({products:data});  
+          }else{
+              if(res.status===500){
+                  alert('erreur au niveau serveur');
+              }
+          }
+        }).catch(err=>{
+            console.log(err);
+            console.log('som thing was wrong');
+        });
+    }
 
     render() { 
         return (  
