@@ -21,9 +21,12 @@ class Login extends Component {
     auth = ()=> {
     	let log = document.querySelector("#username").value;
     	let pass= document.querySelector("#password").value;
-    	console.log();
 
-    	let body = {"login":log, "password": pass};
+			let body = {"id":log, "password": pass};
+			console.log(body);
+			axios.post('http://127.0.0.1:8000/login/auth/',body).then(rep=>{
+				console.log(rep);
+			});
 
 		let defaultOptions = {
 			url:'http://127.0.0.1:8000/login/auth',
@@ -35,9 +38,9 @@ class Login extends Component {
 			body:body,
 		};
 
-		AsyncService(defaultOptions).then((value) => {
+	/*	AsyncService(defaultOptions).then((value) => {
 			console.log(value)
-		})
+		})*/
     }
 
 	HeaderPostAction = ()=>{
@@ -126,7 +129,7 @@ class Login extends Component {
 						
 							</div>
 							<div className="col-3" >
-								<button className="btn" onClick={this.auth}><b>Go</b></button>
+								<button className="btn" onClick={()=>this.auth()}><b>Go</b></button>
 							</div>
 						</div>
 					</div>
