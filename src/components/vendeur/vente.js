@@ -121,12 +121,8 @@ class Vente extends Component {
    getProducts(event,prod){
        event.preventDefault();
        let init={
-           prod:"prod",
-          
+           prod:"prod", 
        };
-       //console.log(init);
-       //const request = new Request('http://127.0.0.1:8000/vendeur/getProducts/',{prod:prod});
-       //console.log(prod);
       axios.post('http://127.0.0.1:8000/vendeur/getProducts/',{prod:prod}).then(res =>{
           if(res.status===200){
               console.log(res.data.data);
@@ -143,17 +139,7 @@ class Vente extends Component {
             console.log(err);
             console.log('som thing was wrong');
         });
-       //axios.post('http://127.0.0.1:5000/element',{prod:'prod'}).then(res =>console.log(res));
-       //request.method=init;
-       /* fetch('http://127.0.0.1:8000/vendeur/getProducts/',{method:"POST", data:{prod:"pr"}})
-        .then(res =>res.json()).then(resjson=>{
-            let products=[];
-            console.log(resjson);
-            products=resjson.data;
-            products=JSON.parse(products.replace(/'/g,'"'));
-            this.setState({products:products});
-            console.log(products);
-        });*/
+       
    }
    saveBill(){
        //chosedProducts

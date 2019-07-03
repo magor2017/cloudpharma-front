@@ -44,7 +44,7 @@ class ListProd extends Component {
                         <td>{p.UnitsInStock}</td>
                         <td>{p.SellingPriceOfUnit}</td>
                         <td>{p.Tva===0?"Non":"Oui"}</td>
-                        <td><span><ModalUpdateProd /><i onClick={(event)=>this.deleteProduct(event,p)} style={{cursor:"pointer"}} className="far fa-trash-alt fa-2x"></i></span></td>
+                        <td><span><ModalUpdateProd produit={p} /><i onClick={(event)=>this.deleteProduct(event,p)} style={{cursor:"pointer"}} className="far fa-trash-alt fa-2x"></i></span></td>
                     </tr> 
                 )
             });
