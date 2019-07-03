@@ -1,0 +1,62 @@
+.Login{
+	min-width: 100%;
+	max-width: 100%;
+	min-height: 100%;
+	max-height: 100%;
+}
+
+.firstrow{
+	margin-top:10%;
+}
+
+.loginblock{
+		border: 0.1rem solid white;
+		padding: 2rem;
+		border-radius: 1rem;
+}
+
+.logLogin{
+	background-image: url("images/login.svg");
+	min-height: 68px;
+	min-width: 68px;
+	max-height: 68px;
+	max-width: 68px	;
+}
+
+.formcontainer{
+	margin: 2rem;
+}
+
+.btnvalidblock button{
+	color:white;
+	padding-right: 4rem;
+	padding-left: 4rem;
+	background-color: #3BF899;
+}
+
+input.transparent-input{
+       background-color:rgba(255,255,255,0.3) !important;
+       border:1px solid white;
+       color: white !important;
+
+}
+
+.input-group-text.username{
+	background-image: url("images/password.svg");
+	min-height: 40px;
+	min-width: 40px;
+	max-height: 40px;
+	max-width: 40px	;
+}
+
+.input-group-text.logtexte{
+	color: blue;
+	font-size: 2rem;
+}
+
+.input-group-prepend{
+	min-height: 38px;
+
+	max-height: 38px;
+
+}
