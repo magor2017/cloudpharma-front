@@ -1,0 +1,19 @@
+{
+  "files": {
+    "main.css": "/cloudpharma-front/static/css/main.cbc72f70.chunk.css",
+    "main.js": "/cloudpharma-front/static/js/main.9fcfd392.chunk.js",
+    "main.js.map": "/cloudpharma-front/static/js/main.9fcfd392.chunk.js.map",
+    "runtime~main.js": "/cloudpharma-front/static/js/runtime~main.47140bde.js",
+    "runtime~main.js.map": "/cloudpharma-front/static/js/runtime~main.47140bde.js.map",
+    "static/css/2.266e55a5.chunk.css": "/cloudpharma-front/static/css/2.266e55a5.chunk.css",
+    "static/js/2.f1cc8e59.chunk.js": "/cloudpharma-front/static/js/2.f1cc8e59.chunk.js",
+    "static/js/2.f1cc8e59.chunk.js.map": "/cloudpharma-front/static/js/2.f1cc8e59.chunk.js.map",
+    "index.html": "/cloudpharma-front/index.html",
+    "precache-manifest.fefa7f41c2040f9fd5bb0f0bb9da0132.js": "/cloudpharma-front/precache-manifest.fefa7f41c2040f9fd5bb0f0bb9da0132.js",
+    "service-worker.js": "/cloudpharma-front/service-worker.js",
+    "static/css/2.266e55a5.chunk.css.map": "/cloudpharma-front/static/css/2.266e55a5.chunk.css.map",
+    "static/css/main.cbc72f70.chunk.css.map": "/cloudpharma-front/static/css/main.cbc72f70.chunk.css.map",
+    "static/media/login.css": "/cloudpharma-front/static/media/password.617157eb.svg",
+    "static/media/logo.svg": "/cloudpharma-front/static/media/logo.5d5d9eef.svg"
+  }
+}
