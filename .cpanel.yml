@@ -1,0 +1,4 @@
+deployment:
+  tasks:
+    - export DEPLOYPATH=/home/cloudph1/public_html/
+    - /bin/cp -R images $DEPLOYPATH
