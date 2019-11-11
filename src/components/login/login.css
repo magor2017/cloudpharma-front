@@ -16,11 +16,32 @@
 }
 
 .logLogin{
+	text-align: center;
 	background-image: url("images/login.svg");
 	min-height: 68px;
 	min-width: 68px;
 	max-height: 68px;
 	max-width: 68px	;
+	margin-left: auto;
+	margin-right: auto;
+}
+#pass{
+	background-image: url("images/password.svg");
+	background-repeat: no-repeat;
+	background-position: center;
+	min-height: 38px;
+	min-width: 38px;
+	max-height: 38px;
+	max-width: 38px	;	
+}
+#id{
+	background-image: url("images/arrow_left.svg");
+	background-repeat: no-repeat;
+	background-position: center;
+	min-height: 38px;
+	min-width: 38px;
+	max-height: 38px;
+	max-width: 38px	;	
 }
 
 .formcontainer{
@@ -59,4 +80,10 @@ input.transparent-input{
 
 	max-height: 38px;
 
+}
+.hide{
+	display:none;
+}
+.show{
+	display: inline-block;
 }

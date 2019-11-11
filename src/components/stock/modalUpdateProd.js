@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Button,Modal } from 'react-bootstrap';
 import axios from 'axios';
+import link from '../link';
 class ModalUpdate extends Component {
     constructor(props){
         super(props);
@@ -33,9 +34,13 @@ class ModalUpdate extends Component {
           console.log(p);
       }
       validerUpdate(){
-          this.isChanged();
+          let id=sessionStorage.getItem("id");
+          let token=sessionStorage.getItem("token");
+          let idShop=sessionStorage.getItem("idShop");
+          this.isChanged(id,token,idShop);
       }
-      isChanged(){
+      //test si le produit a ete modifier et met a jour le produit
+      isChanged(id,token,idShop){
           let p1=this.state.pTempon;
           let p2=this.state.produit;
           let param={};
@@ -71,12 +76,17 @@ class ModalUpdate extends Component {
                     param.Tva=p2.Tva;
                     tab.push("tva")
                 }
-                console.log(tab)
-                axios.post('http://127.0.0.1:8000/stock/updateProduct/',{"ProductId":p2.ProductId,"param":param,"attribut":tab})
+                console.log(param);
+                axios({
+                    url:link+'/stock/updateProduct',
+                    method:'post',
+                    data:'ProductId='+p2.ProductId+'&param='+JSON.stringify(param)+'&attribut='+JSON.stringify(tab)+'&id='+id+'&token='+token+'&idShop='+idShop,
+                })
                 .then(rep =>{
                     if(rep.status===200){
-                        let reponse=rep.data.data;
-                        this.handleClose();
+                        console.log(rep);
+                      //  let reponse=rep.data.data;
+                       // this.handleClose();
                         //console.log(reponse);
                     }
                 })
@@ -101,6 +111,8 @@ class ModalUpdate extends Component {
                     Peremption:this.state.produit.Peremption,
                     rayon:this.state.produit.rayon,
                 }
+               // let p=this.state.produit;
+               // p.ProductTitle=event.target.value
                 this.setState({produit:p});
                 break;
             }

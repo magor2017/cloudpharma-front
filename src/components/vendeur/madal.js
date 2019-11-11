@@ -28,10 +28,10 @@ class Modalsn extends Component {
             return(
                 <tr key={index}>
                     <td>{index+1}</td>
-                    <td>{p.name}</td>
+                    <td>{p.ProductTitle}</td>
                     <td>{p.quantite}</td>
-                    <td>{p.prix}</td>
-                    <td>{p.prix*p.quantite}</td>
+                    <td>{p.SellingPriceOfUnit}</td>
+                    <td>{p.SellingPriceOfUnit*p.quantite}</td>
                     <td><span style={{cursor:"pointer"}}><i className="far fa-trash-alt"></i></span></td>
                 </tr>
             )

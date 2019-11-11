@@ -2,6 +2,7 @@ import React,{Component} from 'react';
 import PropTypes from 'prop-types';
 import ModalUpdateProd from './modalUpdateProd';
 import axios from 'axios';
+import link from '../link';
 
 class ListProd extends Component {
     constructor(){
@@ -17,7 +18,7 @@ class ListProd extends Component {
     deleteProduct(event,p){
         event.preventDefault();
         console.log(p);
-        axios.post(this.state.link+'stock/deleteProduct/',{"id":p.ProductId})
+        axios.post(link+'stock/deleteProduct/',{"id":p.ProductId})
         .then(rep =>{
             if(rep.status===200){
                 if(rep.data.data===-1){
@@ -38,22 +39,20 @@ class ListProd extends Component {
             let f=this.props.data.filter((el,index)=>(index>=parseInt(this.props.index) && index<parseInt(this.props.offset)+parseInt(this.props.index)));
             l=f.map((p,index)=>{
                 return(
-                    <tr>
+                    <tr key={index}>
                         <td>{index+1}</td>
                         <td>{p.ProductTitle}</td>
                         <td>{p.UnitsInStock}</td>
                         <td>{p.SellingPriceOfUnit}</td>
-                        <td>{p.Tva===0?"Non":"Oui"}</td>
+                        <td>{parseInt(p.Tva)===0?"Non":"Oui"}</td>
                         <td><span><ModalUpdateProd produit={p} /><i onClick={(event)=>this.deleteProduct(event,p)} style={{cursor:"pointer"}} className="far fa-trash-alt fa-2x"></i></span></td>
-                    </tr> 
-                )
+                    </tr>);
             });
        }
         return ( 
             <tbody style={{backgroundColor:"#CFD4FF",color:"white"}}>
                 {l}
             </tbody>
-       
         );
     }
 }

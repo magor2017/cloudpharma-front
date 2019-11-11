@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import './historique.css';
 import ListProd from './listProd';
 import axios from 'axios';
+import link from '../link';
 //import ReactPaginate from 'react-paginate';
 
 class Historique extends Component {
@@ -22,10 +23,17 @@ class Historique extends Component {
         if(date!==""){
             d=date.replace(/\'-/g,"/");
         }
-        axios.post('http://127.0.0.1:8000/vendeur/getProductsByDate/',{date:d})
+        let id=sessionStorage.getItem('id');
+        let idShop=sessionStorage.getItem('idShop');
+        axios({
+            url:link+'/vente/getProductByDate',
+            method:'post',
+            data:'date='+d+'&id='+id+'&idShop='+idShop,
+        })
         .then((rep)=>{
            if(rep.status===200){
-            this.setState({products:rep.data.data})
+              // console.log(rep);
+               this.setState({products:rep.data})
            }
            
         });
@@ -33,11 +41,21 @@ class Historique extends Component {
     getProductsByInterval(date1,date2){
         //let d1=date1.replace(/-/g,"/")
         //let d2=date2.replace(/-/g,"/")
-        //console.log(d1);
-        axios.post('http://127.0.0.1:8000/vendeur/getProductsByInterval',{date1:date1,date2:date2})
+       // console.log("date deb "+date1);
+        //console.log("date fin "+date2);
+        let id=sessionStorage.getItem('id');
+        let idShop=sessionStorage.getItem('idShop');
+        let token=sessionStorage.getItem("token");
+        let level=sessionStorage.getItem("level");
+        axios({
+            url:link+'/vente/getProductByInterval',
+            method:'post',
+            'data':'dateDeb='+date1+'&dateFin='+date2+'&id='+id+'&idShop='+idShop+'&token='+token+'&level='+level
+        })
         .then((rep)=>{
            if(rep.status===200){
-            this.setState({products:rep.data.data})
+              // console.log(rep);
+               this.setState({products:rep.data})
            }
         });
 
@@ -49,7 +67,7 @@ class Historique extends Component {
     getCa(){
         let ca=0;
         this.state.products.forEach(trans => {
-            ca+=trans.TotalPrice;
+            ca+=parseInt(trans.TotalPrice);
             
         });
         return ca;
@@ -57,7 +75,7 @@ class Historique extends Component {
     
     next(nb=0){
         if(nb===0){
-            console.log(this.state.index);
+           // console.log(this.state.index);
             let length=this.state.products.length;
             let newIndex=length+this.state.offset;
             if(length>=newIndex){

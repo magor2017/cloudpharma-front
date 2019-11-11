@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import './addProduct.css';
 import axios from 'axios';
+import link from '../link';
 
 class AddProduct extends Component {
     constructor(){
@@ -154,30 +155,41 @@ class AddProduct extends Component {
     }
     addProduct(event){
         event.preventDefault();
-        axios.post('http://127.0.0.1:8000/stock/addProduct/',this.state.produit)
-        .then((rep)=>{
-            if(rep.status===200){
-                switch(rep.data.row){
-                case 1:{
-                    this.reinitialiseProduct();
-                    alert("produit ajoute");
-                    break;
+        let id=sessionStorage.getItem('id');
+        let token=sessionStorage.getItem('token');
+        let idShop=sessionStorage.getItem('idShop');
+        if(this.state.produit.nom!=="" && this.state.produit.nom!==undefined){
+            axios({
+                url:link+'/stock/addProduct',
+                method:'post',
+                data:'id='+id+'&token='+token+'&idShop='+idShop+'&product='+JSON.stringify(this.state.produit)
+            })
+            .then((rep)=>{
+                if(rep.status===200){
+                    switch(rep.data.status){
+                    case 1:{
+                        this.reinitialiseProduct();
+                        alert("produit ajoute");
+                        break;
+                    }
+                    case 0:{
+                        alert("une erreur est survenue lors de l'ajout du produit veuillez reessayer plutards");
+                        break;
+                    }
+                    case -1:{
+                        alert("produit deja ajoute");
+                        break;
+                    }
+                    default:{
+                        alert("une erreur est survenue lors de l'ajout du produit veuillez reessayer plutards");
+                    }
                 }
-                case 0:{
-                    alert("une erreur est survenue lors de l'ajout du produit veuillez reessayer plutards");
-                    break;
                 }
-                case -1:{
-                    alert("produit deja ajoute");
-                    break;
-                }
-                default:{
-                    alert("une erreur est survenue lors de l'ajout du produit veuillez reessayer plutards");
-                }
-              }
-            }
-            console.log(rep)
-        })
+                console.log(rep)
+            });
+       }else{
+           alert("le Nom du produit obligatoire");
+       }
         console.log(this.state.produit);
     }
     render() { 

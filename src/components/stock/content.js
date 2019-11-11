@@ -3,9 +3,15 @@ import {BrowserRouter as Router,Link,Route,Switch} from 'react-router-dom';
 import ListeProduit from './listeProduits';
 import AddProduct from './addProduct';
 import Reappro from './reappro';
+import Rayon from './rayon';
 import './content.css';
 class ContentStock extends Component {
-    state = {  }
+    constructor(){
+        super();
+        this.state={
+            level:sessionStorage.getItem("level")==="1"?"/vendeur":"/superviseur",
+        }
+    }
     render() { 
         return ( 
             
@@ -18,21 +24,25 @@ class ContentStock extends Component {
                     </div>
                     <div id="menust">
                         <div>
-                            <Link to="/vendeur/stock/contentstock"><span>Products</span></Link>
+                            <Link to={this.state.level+"/stock/contentstock"}><span>Products</span></Link>
                         </div>
                         <div>
-                            <Link to="/vendeur/stock/addProduct"><span>Ajouter</span></Link>
+                            <Link to={this.state.level+"/stock/addProduct"}><span>Ajouter</span></Link>
                         </div>
                         <div>
-                            <Link to="/vendeur/stock/reapproProduct"><span>Reapprovisionnement</span></Link>
+                            <Link to={this.state.level+"/stock/reapproProduct"}><span>Reapprovisionnement</span></Link>
+                        </div>
+                        <div>
+                            <Link to={this.state.level+"/stock/rayon"}><span>Rayon</span></Link>
                         </div>
                     </div>
                 
                     <Switch>
-                        <Route exact path="/vendeur/stock/contentstock" component={ListeProduit}></Route>
-                        <Route exact path="/vendeur/stock/addProduct" component={AddProduct}></Route>
-                        <Route exact path="/vendeur/stock/updateProduct" component={AddProduct}></Route>
-                        <Route exact path="/vendeur/stock/reapproProduct" component={Reappro}></Route>
+                        <Route exact path={this.state.level+"/stock/contentstock"} component={ListeProduit}></Route>
+                        <Route exact path={this.state.level+"/stock/addProduct"} component={AddProduct}></Route>
+                        <Route exact path={this.state.level+"/stock/updateProduct"} component={AddProduct}></Route>
+                        <Route exact path={this.state.level+"/stock/reapproProduct"} component={Reappro}></Route>
+                        <Route exact path={this.state.level+"/stock/rayon"} component={Rayon}></Route>
                     </Switch>
                 </Router>
             

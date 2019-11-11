@@ -4,7 +4,12 @@ import Vente from './vente';
 import Historique from './historique';
 import './content.css';
 class Content extends Component {
-    state = {  }
+    constructor(){
+        super();
+        this.state={
+            level:sessionStorage.getItem("level")==="1"?"/vendeur":"/superviseur",
+        }
+    }
     
    
     render() { 
@@ -19,16 +24,16 @@ class Content extends Component {
                     </div>
                     <div id="menu">
                         <div>
-                            <Link to="/vendeur/content"><i class="fas fa-shopping-cart fa-2x"></i>Vente</Link>
+                            <Link to={this.state.level+"/vente/content"}><i class="fas fa-shopping-cart fa-2x"></i>Vente</Link>
                         </div>
                         <div>
-                            <Link to="/vendeur/content/historique"><i class="fas fa-history fa-2x"></i>Historique</Link>
+                            <Link to={this.state.level+"/vente/content/historique"}><i class="fas fa-history fa-2x"></i>Historique</Link>
                         </div>
                     </div>
                     
                         <Switch>
-                            <Route exact path="/vendeur/content/historique" component={Historique} />
-                            <Route exact path="/vendeur/content" component={Vente} />
+                            <Route exact path={this.state.level+"/vente/content/historique"} component={Historique} />
+                            <Route exact path={this.state.level+"/vente/content"} component={Vente} />
                         </Switch>
                     
                 </div>

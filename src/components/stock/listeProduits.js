@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { stat } from 'fs';
 import ListProd from './listProd';
 import axios from 'axios';
+import link from '../link';
 
 
 class ListeProduit extends Component {
@@ -17,10 +18,22 @@ class ListeProduit extends Component {
         this.getListProduct();
     }
     getListProduct(){
-        axios.post(this.state.link+'stock/listProduct/')
+        let id=sessionStorage.getItem("id");
+        let token=sessionStorage.getItem("token");
+        let idShop=sessionStorage.getItem("idShop");
+        axios({
+            url:link+'/stock/listProduct',
+            method:'post',
+            data:"id="+id+"&token="+token+"&idShop="+idShop
+        })
         .then((rep)=>{
-            this.setState({products:rep.data.data});
-            console.log(rep.data.data);
+            if(rep.status===200){
+                console.log(rep);
+                this.setState({products:rep.data.data});
+            }else{
+                this.setState({products:[]});
+            }
+           
         })
     }
     next(nb=0){
@@ -42,7 +55,7 @@ class ListeProduit extends Component {
             let tab=Array(nb).fill(0);
             return tab.map((el,index)=>{
                 return(
-                    <li className="page-item">
+                    <li key={index} className="page-item">
                         <span onClick={()=>this.next(index+1)} className="page-link" href="#">{index+1}</span>
                     </li>
                 )
@@ -56,7 +69,7 @@ class ListeProduit extends Component {
     }
     handleFilterName(e){
         e.preventDefault();
-        if(e.target.value!=""){
+        if(e.target.value!==""){
             this.setState({filterName:e.target.value});
             let p=this.state.products.filter((p,index)=>p.ProductTitle.includes(e.target.value)===true);
             this.setState({products:p});
@@ -103,13 +116,12 @@ class ListeProduit extends Component {
                             <th>Actions</th>
                         </tr>
                     </thead>
-                    
                     <ListProd data={this.state.products} offset={this.state.offset} index={this.state.index}/>
                 </table>
                 <nav aria-label="Page navigation example">
                     <ul class="pagination justify-content-center">
                         <li class="page-item disabled">
-                            <a class="page-link" href="#" tabindex="-1">Previous</a>
+                            <a class="page-link" href="#" tabIndex="-1">Previous</a>
                         </li>
                         {this.getli()}
                         <li class="page-item">

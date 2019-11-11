@@ -2,10 +2,15 @@ import React, { Component } from 'react';
 import Downshift from 'downshift';
 import axios from 'axios';
 import matchSorter from 'match-sorter';
+import link from '../link';
 class Reappro extends Component {
     constructor(){
         super();
         this.state = {
+            fours:[],
+            date:"",
+            numFacture:"",
+            fournisseur:0,
             inputValue:true,
             products:[],
             chosedProducts:[],
@@ -19,7 +24,8 @@ class Reappro extends Component {
                 PurchasePriceTempon:0,
                 peremption:"",
             },
-        }
+        };
+        this.getFournisseurByidShop();
     }
     
     
@@ -87,15 +93,23 @@ class Reappro extends Component {
     }
     getProducts(event,prod){
         event.preventDefault();
+        let id=sessionStorage.getItem("id");
+        let token=sessionStorage.getItem("token");
+        let idShop=sessionStorage.getItem("idShop");
+        let level=sessionStorage.getItem("level");
         let init={
             prod:"prod", 
         };
-       axios.post('http://127.0.0.1:8000/vendeur/getProducts/',{prod:prod}).then(res =>{
+       axios({
+           url:link+'/vente/getProducts',
+           method:'post',
+           data:'prod='+prod+'&id='+id+'&token='+token+'&idShop='+idShop+'&level='+level
+        }).then(res =>{
            if(res.status===200){
-               console.log(res.data.data);
+               console.log(res.data);
                //let data=JSON.parse(res.data.data.replace(/\'/g,'"'));
                let data=res.data.data;
-               console.log(data);
+             //  console.log(data);
                this.setState({products:data});  
            }else{
                if(res.status===500){
@@ -147,20 +161,102 @@ class Reappro extends Component {
         p.PurchasePriceOfUnit=event.target.value;
         this.setState({produit:p});
     }
+    saveReappro(event){
+        event.preventDefault();
+        let numFacture=this.state.numFacture;
+        let fournisseur=this.state.fournisseur;
+        let date=this.state.date;
+        let id=sessionStorage.getItem("id");
+        let token=sessionStorage.getItem("token");
+        let level=sessionStorage.getItem("level");
+        let idShop=sessionStorage.getItem("idShop");
+        let products=this.state.chosedProducts;
+        if(numFacture!==undefined && numFacture!=="" && parseInt(fournisseur)>0){
+           // console.log(this.state.chosedProducts);
+            //console.log("save reappro function");
+            axios({
+                url:link+'/stock/reappro',
+                method:'post',
+                data:"numFacture="+numFacture+"&fournisseur="+fournisseur+"&date="+date+"&id="+id+"&token="+token+"&level="+level+"&idShop="+idShop+"&products="+JSON.stringify(products)
+            }).then(rep =>{
+               // console.log(rep);
+                let data=rep.data;
+               // console.log(data);
+               if(data.status===1){
+                    switch(data.ton){
+                        case 1:{
+                            alert("produit mis a jour");
+                            this.setState({chosedProducts:[],numFacture:"",fournisseur:0});
+                            break;
+                        }
+                        case 0:{
+                            alert("problem au niveau du serveur");
+                            break;
+                        }
+                        case -1:{
+                            alert("facture deja enregistre");
+                            break;
+                        }
+                        default:{
+
+                        }
+
+                    }
+                }else{
+                    alert("session expiree veuillez vous reconnecter svp.");
+                }
+            }).catch(error =>{
+                console.log(error);
+            }
+            );
+
+        }
+       
+    }
+    handleNumFacture(event){
+        event.preventDefault();
+        this.setState({numFacture:event.target.value});
+    }
+    handleFournisseur(event){
+        event.preventDefault();
+        this.setState({fournisseur:event.target.value});
+    }
+    handleDate(event){
+        event.preventDefault();
+        //console.log(event.target.value);
+        this.setState({date:event.target.value});
+    }
+    getFournisseurByidShop(){
+        let idShop=sessionStorage.getItem("idShop");
+        fetch(link+"/fournisseur/liste",{
+            method:"POST",
+            body:"idShop="+idShop,
+            headers:{
+                "Content-Type":"application/x-www-form-urlencoded"
+            }
+        }).then(rep=>rep.json()).then(text=>{
+            this.setState({fours:text.liste});
+           // console.log(text);
+        });
+    }
     render() { 
         return ( 
             <div>
                 <div style={{backgroundColor:"white",paddingTop:"15px",paddingBottom:"15px"}}>
                     <form style={{width:"90%",marginLeft:"auto",marginRight:"auto"}}  className="form-inline">
                         <label style={{marginRight:"0.5em"}}>numero facture</label>
-                        <input style={{marginRight:"0.5em"}} type="text" className="form-control" />
+                        <input value={this.state.numFacture} onChange={(event)=>this.handleNumFacture(event)} style={{marginRight:"0.5em"}} type="text" className="form-control" />
                         <label style={{marginRight:"0.5em"}}>fournisseur</label>
-                        <select style={{marginRight:"0.5em"}} className="form-control">
-                            <option>fournisseur 1</option>
-                            <option>fournisseur 2</option>
+                        <select value={this.state.fournisseur} onChange={(event)=>this.handleFournisseur(event)} style={{marginRight:"0.5em"}} className="form-control">
+                            <option key="0" value="0">--fournisseur--</option>
+                            {this.state.fours.map((f,i)=>{
+                                return(
+                                    <option key={i+1} value={f.id}>{f.nom}</option>
+                                )
+                            })}
                         </select>
                         <label style={{marginRight:"0.5em"}}>Date</label>
-                        <input type="date" className="form-control" />
+                        <input onChange={(event)=>this.handleDate(event)} value={this.state.date} type="date" className="form-control" />
                     </form>
                 </div>
                 <div style={{backgroundColor:"white",paddingTop:"15px",paddingBottom:"15px"}}>
@@ -230,7 +326,7 @@ class Reappro extends Component {
                     </table>
                     <div style={{width:"40%",marginLeft:"auto",marginRight:"auto"}}>
                         <label style={{backgroundColor:"yellow",cursor:"pointer",marginRight:"15px",padding:"1.5em"}}>Total facture : {this.totalPrice()}</label>
-                        <label style={{backgroundColor:"green",cursor:"pointer",padding:"1.5em"}}>Valider</label>
+                        <label onClick={(event)=>this.saveReappro(event)} style={{backgroundColor:"green",cursor:"pointer",padding:"1.5em"}}>Valider</label>
                     </div>
                 </div>
             </div>

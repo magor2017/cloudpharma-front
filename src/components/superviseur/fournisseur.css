@@ -1,0 +1,11 @@
+.menuli{
+    display:inline-block;
+    margin:0.9em;
+    padding: 0.3em;
+    background-color: white;
+    border-radius: 10px;
+    cursor: pointer;
+}
+.menuul{
+    text-align: center;
+}

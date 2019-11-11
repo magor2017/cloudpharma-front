@@ -4,6 +4,7 @@ import { relative } from 'path';
 import Downshift from 'downshift';
 import matchSorter from 'match-sorter';
 import axios from 'axios';
+import link from '../link';
 
 
 
@@ -49,7 +50,7 @@ class Vente extends Component {
                 let products=this.state.chosedProducts;
                 products.forEach((el,index)=>{
                     if(el.ProductTitle===p.ProductTitle){
-                        el.SellingPriceOfUnit+=q;
+                        el.quantite+=parseInt(q);
                         this.setState({chosedProducts:products});
                         this.initPropsProd();
                     }
@@ -89,13 +90,16 @@ class Vente extends Component {
 
       }
        getItems(item,products){
-           return item?matchSorter(products,item,{keys:['ProductTitle']}):[]
+             return item?matchSorter(products,item,{keys:['ProductTitle']}):[]
+          //return products;
         }
     handleQuantite(event){
         event.preventDefault();
         let qu=parseInt(event.target.value);
+        let p=this.state.produit;
+        p.quantite=qu
         this.setState({
-            produit:{...{quantite:qu}}
+            produit:p
         });
         console.log('event!!!');
     }
@@ -123,12 +127,22 @@ class Vente extends Component {
        let init={
            prod:"prod", 
        };
-      axios.post('http://127.0.0.1:8000/vendeur/getProducts/',{prod:prod}).then(res =>{
+       let id=sessionStorage.getItem("id");
+       let token=sessionStorage.getItem("token");
+       let level=sessionStorage.getItem("level");
+       let idShop=sessionStorage.getItem("idShop");
+       console.log("id,token,level,idShop",id,token,level,idShop);
+      axios({
+          url:link+'/vente/getProducts',
+          method:'post',
+          data:'id='+id+'&token='+token+'&level='+level+'&idShop='+idShop,
+          headers:{"Content-Type":"application/x-www-form-urlencoded"}
+      }).then(res =>{
           if(res.status===200){
-              console.log(res.data.data);
+              //console.log(res.data.data);
               //let data=JSON.parse(res.data.data.replace(/\'/g,'"'));
               let data=res.data.data;
-              console.log(data);
+              //console.log(data);
               this.setState({products:data});  
           }else{
               if(res.status===500){
@@ -149,15 +163,33 @@ class Vente extends Component {
            idUser:988,
            total:this.totalPrice(),
        }
-       axios.post('http://127.0.0.1:8000/vendeur/saveBill/',params)
-       .then(rep =>{
-           if(rep.status===200){
-               this.setState({chosedProducts:[]});
-               alert("vente reussi");
-           }
-           //console.log(rep);
-        })
-       .catch(err => console.log(err));
+       let token=sessionStorage.getItem('token');
+       let id=sessionStorage.getItem('id');
+       let level=sessionStorage.getItem('level');
+       let idShop=sessionStorage.getItem('idShop');
+       let products=JSON.stringify(this.state.chosedProducts);
+       if(this.state.chosedProducts.length>=1){
+            axios({
+                url:link+'/vente/saveBill',
+                method:'post',
+                data:'products='+products+'&token='+token+'&id='+id+'&level='+level+'&total='+this.totalPrice()+'&idShop='+idShop,
+            })
+            .then(rep =>{
+                if(rep.status===200){
+                    console.log(rep);
+                    if(rep.data.status===1){
+                        this.setState({chosedProducts:[]});
+                        alert("vente reussi");
+                    }else{
+                        alert("erreur au niveau du serveur");
+                    }
+                }
+                //console.log(rep);
+                })
+            .catch(err => console.log(err));
+    }else{
+        alert("il faut choisir au moins un produit !!!");
+    }
 
    }
     render() { 
