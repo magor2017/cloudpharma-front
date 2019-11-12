@@ -45,6 +45,7 @@ span{
     background-color:white;
     list-style-type:none;padding-left:0px;
     width:20%;
+    padding-right: 1rem;
 }
 #ulauto > li{
     cursor:pointer;
@@ -110,4 +111,9 @@ span{
 }
 .tableProdS{
     display:none;
+}
+
+li{
+    width: 100%;
+    margin: 2%;
 }
