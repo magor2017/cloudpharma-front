@@ -1,0 +1,20 @@
+#produit{
+    /*box-shadow: inset;*/
+    box-shadow: 12px 12px 2px 1px #E7EBDA;
+    margin: 0.8em;
+    border:1px solid black;
+    padding-bottom: 0.2em;
+}
+#price,#description,#peremption{
+    
+    font-weight: bold;
+    font-size: 1.3em;
+}
+.ajpn{
+    border-radius: 20px;
+    background-color: #734222;
+    color:white;
+}
+#pers{
+    cursor: pointer;
+}

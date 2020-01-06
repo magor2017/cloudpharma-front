@@ -33,11 +33,38 @@ class ModalUpdate extends Component {
           this.setState({ show: true ,produit:p,pTempon:p});
           console.log(p);
       }
+      setProductToEcom(id){
+          console.log(id);
+          fetch(link+"/ecom/setProductToEcom",{
+              method:"POST",
+              body:"id="+id,
+              headers:{"Content-Type": "application/x-www-form-urlencoded"}
+          }).then(rep=> rep.json()).then(json=>{
+              console.log(json);
+          });
+
+      }
+      removeProductFromEcom(id){
+        console.log(id);
+          fetch(link+"/ecom/removeProductFromEcom",{
+              method:"POST",
+              body:"id="+id,
+              headers:{"Content-Type": "application/x-www-form-urlencoded"}
+          }).then(rep=> rep.json()).then(json=>{
+              console.log(json);
+          });
+
+      }
       validerUpdate(){
           let id=sessionStorage.getItem("id");
           let token=sessionStorage.getItem("token");
           let idShop=sessionStorage.getItem("idShop");
           this.isChanged(id,token,idShop);
+      }
+      btnEcom(){
+          let add=<button onClick={()=>this.setProductToEcom(this.state.produit.ProductId)} className="btn btn-success">ajouter E.com</button>;
+          let del=<button onClick={()=>this.removeProductFromEcom(this.state.produit.ProductId)} className="btn btn-danger">retirer E.com</button>;
+          return parseInt(this.state.produit.ecom)===0?add:del;
       }
       //test si le produit a ete modifier et met a jour le produit
       isChanged(id,token,idShop){
@@ -297,6 +324,7 @@ class ModalUpdate extends Component {
                 <Button variant="primary" onClick={()=>this.handleClose()}>
                   annuler
                 </Button>
+                {this.btnEcom()}
               </Modal.Footer>
             </Modal>
           </>

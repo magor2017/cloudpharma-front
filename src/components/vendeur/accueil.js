@@ -4,6 +4,7 @@ import {BrowserRouter as Router,Link,Route,Switch,Redirect } from 'react-router-
 import ContentStock from '../stock/content';
 import Profil from './profil';
 import Vente from './vente';
+import Accueilstore from '../store/accueil';
 import './accueil.css';
 import axios from 'axios';
 import link from '../link';
@@ -25,6 +26,10 @@ class Accueil extends Component {
                 <div style={{"color":"#066A74","backgroundColor":"white","border":"1px solid #066A74","padding":"20px","textAlign":"center",cursor:"pointer"}}>
                     <div><i style={{"display":"inline-block"}} className="far fa-user-circle fa-2x"></i></div>
                     <a style={{"display":"inline-block"}}><Link to="/vendeur/profil">Profil</Link></a>
+                </div>,
+                    <div style={{"color":"#066A74","backgroundColor":"white","border":"1px solid #066A74","padding":"20px","textAlign":"center",cursor:"pointer"}}>
+                    <div><i style={{"display":"inline-block"}} className="fas fa-store fa-2x"></i></div>
+                    <a style={{"display":"inline-block"}}><Link to="/vendeur/store">E-commerce</Link></a>
                 </div>,
             
             ],
@@ -127,6 +132,7 @@ class Accueil extends Component {
                             <Route exact path="/vendeur/content" component={Content} />
                             <Route exact path="/vendeur/stock/contentstock" component={ContentStock} />
                             <Route exact path="/vendeur/profil" component={Profil} />
+                            <Route exact path="/vendeur/store" component={Accueilstore} />
                         </Switch>
                     </div>
                 </div> 

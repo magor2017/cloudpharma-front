@@ -38,7 +38,7 @@ export default class Rayon extends Component{
     render(){
         return(
             <div>
-                <ul>
+                <ul id="menurayon">
                     <li onClick={(event)=>this.handleSwitch(event,1)}>Rayons</li>
                     <li onClick={(event)=>this.handleSwitch(event,2)}>Nouveau Rayon</li>
                 </ul>
