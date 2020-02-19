@@ -31,6 +31,15 @@ export default App;
 
 /*
 <Router>
+      <p>bonjour sjdfhhfhfhfhfh</p>
+        <Switch>
+          <Route exact path="%PUBLIC_URL%/" component={Connexion} />
+          <Route exact path="%PUBLIC_URL%/vendeur" component={Accueil} />
+          <Route exact path="%PUBLIC_URL%/login" component={Login} />
+          <Route exact path="%PUBLIC_URL%/superviseur" component={AcceuilSup} />
+        </Switch>
+      </Router>
+<Router>
         <Switch>
           <Route exact path="/" component={Connexion} />
           <Route exact path="/vendeur" component={Accueil} />

@@ -137,7 +137,7 @@ changeBackground(){
 				return <Redirect to={this.state.compte} />
 			 }
         return (  
-			<div className="container">
+			<div  className="container">
 				<div className="row firstrow" >
 					<div className="collg-3 col-md-3 col-xs-3 col-sm-3">
 

@@ -9,6 +9,8 @@ class ModalUpdate extends Component {
             show:false,
             produit:{},
             pTempon:{},
+            ecom:false,
+            ecomquantite:0,
             /*produit:{
                     Produc:"",
                     description:"",
@@ -25,7 +27,7 @@ class ModalUpdate extends Component {
     }
     handleClose() {
         //event.preventDefault();
-        this.setState({ show: false });
+        this.setState({ show: false,ecom:false });
       }
     
       handleShow(event,p) {
@@ -35,14 +37,27 @@ class ModalUpdate extends Component {
       }
       setProductToEcom(id){
           console.log(id);
-          fetch(link+"/ecom/setProductToEcom",{
-              method:"POST",
-              body:"id="+id,
-              headers:{"Content-Type": "application/x-www-form-urlencoded"}
-          }).then(rep=> rep.json()).then(json=>{
-              console.log(json);
-          });
+          this.setState({ecom:true})
+        
 
+      }
+      validerSetProductEcom(id){
+          console.log(this.state.produit);
+          if(parseInt(this.state.ecomquantite)>0 && this.state.produit.Peremption!="" && this.state.produit.Peremption!=undefined){
+                fetch(link+"/ecom/setProductToEcom",{
+                method:"POST",
+                body:"id="+id+"&idShop="+sessionStorage.getItem("idShop")+"&idUser="+sessionStorage.getItem("idUser")+"&quantite="+this.state.ecomquantite+"&peremption="+this.formatDate(this.state.produit.Peremption),
+                headers:{"Content-Type": "application/x-www-form-urlencoded"}
+            }).then(rep=> rep.json()).then(json=>{
+                console.log(json);
+            });
+        }else{
+            if(parseInt(this.state.ecomquantite)<=0){
+                alert("la quantite doit etre superieur a zero");
+            }else{
+                alert("veuillez mettre la date de peremption.");
+            }
+        }
       }
       removeProductFromEcom(id){
         console.log(id);
@@ -62,8 +77,8 @@ class ModalUpdate extends Component {
           this.isChanged(id,token,idShop);
       }
       btnEcom(){
-          let add=<button onClick={()=>this.setProductToEcom(this.state.produit.ProductId)} className="btn btn-success">ajouter E.com</button>;
-          let del=<button onClick={()=>this.removeProductFromEcom(this.state.produit.ProductId)} className="btn btn-danger">retirer E.com</button>;
+          let add=<button style={{display:this.state.ecom===false?"inline-block":"none"}} onClick={()=>this.setProductToEcom(this.state.produit.ProductId)} className="btn btn-success">ajouter E.com</button>;
+          let del=<button style={{display:this.state.ecom===false?"inline-block":"none"}} onClick={()=>this.removeProductFromEcom(this.state.produit.ProductId)} className="btn btn-danger">retirer E.com</button>;
           return parseInt(this.state.produit.ecom)===0?add:del;
       }
       //test si le produit a ete modifier et met a jour le produit
@@ -254,6 +269,21 @@ class ModalUpdate extends Component {
 
         }
     }
+    handlePeremEcom(event){
+        event.preventDefault();
+        let p=this.state.produit;
+        p.Peremption=this.formatDate(event.target.value);
+        this.setState({produit:p});
+    }
+    formatDate(date){
+        let d=date.split('-');
+        return d[2]+"/"+d[1]+"/"+d[0];
+    }
+    handleQuantiteEcom(event){
+        event.preventDefault();
+        this.setState({ecomquantite:event.target.value});
+
+    }
     render() { 
         return ( 
             <>
@@ -263,7 +293,8 @@ class ModalUpdate extends Component {
                 <Modal.Title>Modification d'un produit </Modal.Title>
               </Modal.Header>
               <Modal.Body>
-              <form className="row">
+              <div style={{"display":this.state.ecom===false?"block":"none"}}>
+              <form  className="row">
                 <div className="col-lg-6 col-md-6 col-xs-6 col-sm-6">
                     <div className="form-group">
                         <p>Produit</p>
@@ -316,15 +347,24 @@ class ModalUpdate extends Component {
                 </div> 
                 
             </form>
+            </div>
+            <form style={{"display":this.state.ecom===true?"inline-block":"none"}}>
+                <div><span>Produit : {this.state.produit.ProductTitle}</span></div>
+                <div><span>Quantite a vendre : <input value={this.state.ecomquantite} onChange={(event)=>this.handleQuantiteEcom(event)} type="number" /></span></div>
+                <div><span>Prix de vente actuel : {parseInt(this.state.produit.PurchasePriceOfUnit)}</span></div>
+                <div><span>Prix de vente esperer : {this.state.produit.PurchasePriceOfUnit-(this.state.produit.PurchasePriceOfUnit*15)/100}</span></div>
+                <div><span>Peremption :<span style={{marginRight:"0.5em"}}>{this.state.produit.Peremption}</span><input onChange={(event)=>this.handlePeremEcom(event)} type="date" value={this.state.produit.Peremption} /></span></div>
+            </form>
               </Modal.Body>
               <Modal.Footer>
-                <Button variant="secondary" onClick={()=>this.validerUpdate()} >
+                <Button style={{display:this.state.ecom===false?"inline-block":"none"}} variant="secondary" onClick={()=>this.validerUpdate()} >
                   valider
                 </Button>
                 <Button variant="primary" onClick={()=>this.handleClose()}>
                   annuler
                 </Button>
                 {this.btnEcom()}
+                <button className="btn btn-success" onClick={()=>this.validerSetProductEcom(this.state.produit.ProductId)} style={{display:this.state.ecom===true?"inline-block":"none"}}>valider</button>
               </Modal.Footer>
             </Modal>
           </>

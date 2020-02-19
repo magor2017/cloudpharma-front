@@ -2,30 +2,39 @@ import React, { Component } from 'react';
 import Produit from './produit';
 import './accueil.css';
 import link from '../link';
+import Ecom from './ecom';
+import VenteEcom from './venteEcom';
+import Panier from './panier';
+import MyProduct from './myProducts';
+import Iban from './iban';
+import Historique from './historique';
+import {BrowserRouter as Router,Link,Route,Switch} from 'react-router-dom';
 class Accueilstore extends Component {
     constructor(){
         super();
-        this.state={prod:[]};
-        this.getProductEcom();
+        this.state={
+            prod:[],
+            solde:null,
+            level:sessionStorage.getItem("level")==="1"?"/vendeur":"/superviseur",
+        };
+        this.getSolde();
+       // this.getProductEcom();
         
     }
     getProductEcom(){
-         fetch(link+"/ecom/getproduct").then(rep =>rep.json()).then(t =>{
+         fetch(link+"/ecom/getproduct",{
+             method:"POST",
+             body:"idShop="+parseInt(sessionStorage.getItem("idShop")),
+             headers:{
+                 "Content-Type":"application/x-www-form-urlencoded"
+             }
+         }).then(rep =>rep.json()).then(t =>{
             console.log(t);
-            this.setState({prod:t.prod});
+            this.setState({prod:t.prod,solde:t.solde});
             console.log(this.state.prod);
         })
     }
-    displayProduct(){
-        let p=this.state.prod;
-        return p.map((el,index)=>{
-            return(
-                <div className="col-lg-4 col-md-4 col-xs-12 col-sm-12">
-                    <Produit p={el} src="http://127.0.0.1:3000/images/laboratory-313864_640.jpg" />
-                </div>
-            )
-        });
-    }
+    
     log(){
                   return(
                   <div><div className="col-lg-4 col-md-4 col-xs-12 col-sm-12">
@@ -39,22 +48,47 @@ class Accueilstore extends Component {
                     </div>
                     </div>);
     }
+    getSolde(){
+        let idShop=sessionStorage.getItem("idShop");
+        console.log(idShop);
+        fetch(link+"/ecom/getSolde",{
+            method:"POST",
+            body:"idShop="+parseInt(sessionStorage.getItem("idShop")),
+            headers:{
+                "Content-Type":"application/x-www-form-urlencoded"
+            }
+        }).then(rep =>rep.json()).then(t =>{
+           console.log(t);
+           this.setState({solde:t.solde});
+           console.log(this.state.solde);
+           //773893613
+       })
+
+    }
     render() { 
         return ( 
-            <div>
+            <Router>
+                <div>
+                    <span style={{fontSize:"1.5em",color:"black",backgroundColor:this.state.solde>=0?"white":"red"}}><b>Solde : {this.state.solde} FCFA</b></span>
+                </div>
                 <div style={{paddingTop:"0.2em"}}>
                     <ul id="menustore">
-                        <li>ecommerce</li>
-                        <li>vendre</li>
+                        <Link className="menuEcom" to={this.state.level+"/store"} >Ecommerce</Link>
+                        <Link className="menuEcom" to={this.state.level+"/store/myproducts"} >Mes produits</Link>
+                        <Link className="menuEcom" to={this.state.level+"/store/historique"} >Historique</Link>
+                        <Link className="menuEcom" to={this.state.level+"/store/iban"}>IBAN</Link>
+                        
                     </ul>
                 </div>
-                <div style={{marginLeft:"2em",textAlign:"center",marginBottom:"0.3em"}}>
-                    <input style={{width:"80%",borderRadius:"2em"}} type="search" placeholder=" Taper le nom d'un produit" />
-                </div>
-                <div style={{backgroundColor:"white",marginLeft:"2em"}} className="row">
-                    {this.displayProduct()}
-                </div>
-            </div>
+                
+                    
+                <Switch>
+                    <Route exact path={this.state.level+"/store"} component={Ecom} />
+                    <Route exact path={this.state.level+"/store/myproducts"} component={MyProduct} />
+                    <Route exact path={this.state.level+"/store/iban"} component={Iban}/>
+                    <Route exact path={this.state.level+"/store/historique"} component={Historique} />
+                </Switch>
+            </Router>
          );
     }
 }

@@ -17,7 +17,6 @@
 
 .logLogin{
 	text-align: center;
-	background-image: url("images/login.svg");
 	min-height: 68px;
 	min-width: 68px;
 	max-height: 68px;
@@ -86,4 +85,7 @@ input.transparent-input{
 }
 .show{
 	display: inline-block;
+}
+html{
+	background-image: url("images/first.png");
 }

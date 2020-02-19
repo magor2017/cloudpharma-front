@@ -15,10 +15,10 @@ class Compte extends Component {
        // this.chart();
     }
     getCompte(){
-        let id=sessionStorage.getItem("id");
+        let id=sessionStorage.getItem("idShop");
         let rep1=fetch(link+'/compte/getCompte',{
             method:'post',
-            body:"id="+id,
+            body:"idShop="+id,
             headers:{
                 "Content-Type":"application/x-www-form-urlencoded"
             },
