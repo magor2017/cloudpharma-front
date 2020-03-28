@@ -117,3 +117,6 @@ li{
     width: 100%;
     margin: 2%;
 }
+#typevente > div{
+    /*display: inline;*/
+}

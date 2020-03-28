@@ -42,10 +42,10 @@ changeBackground(){
 						let data=rep.data;
 						
 						if(data.status===1){
-							sessionStorage.setItem("id",rep.data.id);
+							sessionStorage.setItem("id",rep.data.id);//id de l'utilisateur
 							sessionStorage.setItem("token",rep.data.token)
 							sessionStorage.setItem("level",rep.data.level);
-							sessionStorage.setItem("idShop",rep.data.idShop);
+							sessionStorage.setItem("idShop",rep.data.idShop);//id de la boutique
 							sessionStorage.setItem("vente",1);
 							switch(parseInt(rep.data.level)){
 								case 1:{
@@ -57,6 +57,10 @@ changeBackground(){
 									this.setState({compte:"/superviseur"})
 									this.setState({redirect:true});
 									break;	
+								}
+								case 5:{
+									this.setState({compte:"/ipm"})
+									this.setState({redirect:true});
 								}
 								default:{
 									this.setState({redirect:false});

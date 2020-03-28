@@ -5,9 +5,8 @@ import Downshift from 'downshift';
 import matchSorter from 'match-sorter';
 import axios from 'axios';
 import link from '../link';
-
-
-
+import { Button,Modal } from 'react-bootstrap';
+import { placeholder } from '@babel/types';
 
 class Vente extends Component {
     constructor(){
@@ -22,6 +21,8 @@ class Vente extends Component {
                 quantite:1,
                 SellingPriceOfUnit:0,
             },
+            ipm:{},
+            client:{},
         }
     }
     
@@ -167,18 +168,38 @@ class Vente extends Component {
        let id=sessionStorage.getItem('id');
        let level=sessionStorage.getItem('level');
        let idShop=sessionStorage.getItem('idShop');
+       let ipmc=sessionStorage.getItem("ipmc");
+       let client=sessionStorage.getItem("client");
+      // console.log(ipmc);
+       //console.log(client);
+       
        let products=JSON.stringify(this.state.chosedProducts);
-       if(this.state.chosedProducts.length>=1){
+       let ventetype=this.getVenteType();
+       if(ventetype==='ipm'){
+        let ip=JSON.parse(ipmc);
+        let c=JSON.parse(client);
+        if(ip===null || c===null || ip.ipm==="" || c.prenom==="" || c.nom==="" || c.matricule===""){
+             alert("veuillez choisir l'ipm et le client");
+             return;
+        }
+
+    }
+       if(this.state.chosedProducts.length>=1 && ventetype!==''){
             axios({
                 url:link+'/vente/saveBill',
                 method:'post',
-                data:'products='+products+'&token='+token+'&id='+id+'&level='+level+'&total='+this.totalPrice()+'&idShop='+idShop,
+                data:'products='+products+'&token='+token+'&id='+id+'&level='+level+'&total='+this.totalPrice()+'&idShop='+idShop+'&ventetype='+ventetype+'&ipmc='+ipmc+'&client='+client,
             })
             .then(rep =>{
                 if(rep.status===200){
                     console.log(rep);
                     if(rep.data.status===1){
                         this.setState({chosedProducts:[]});
+                        sessionStorage.removeItem("ipmc");
+                        sessionStorage.removeItem("client");
+                        let t=document.getElementsByName("ventetype");
+                        t[0].checked=false;
+                        t[1].checked=false;
                         alert("vente reussi");
                     }else{
                         alert("erreur au niveau du serveur");
@@ -188,10 +209,29 @@ class Vente extends Component {
                 })
             .catch(err => console.log(err));
     }else{
-        alert("il faut choisir au moins un produit !!!");
+        if(this.state.chosedProducts.length<=0){
+            alert("il faut choisir au moins un produit !!!");
+        }else{
+            alert("veuillez choisir le type de vente");
+        }
     }
 
    }
+   getVenteType(){
+       let tab=document.getElementsByName("ventetype");
+       let ele='';
+       tab.forEach(el=>{
+           if(el.checked){
+               ele=el.value;
+           }
+       });
+       console.log(ele);
+       if(ele===''|| ele===undefined){
+           return ''
+       }
+       return ele;
+   }
+   
     render() { 
        /* let products=[
             {id:1,name:"product1",prix:2000},
@@ -229,6 +269,14 @@ class Vente extends Component {
                             <div className="qp">
                                 <label>Prix</label>
                                 <input value={this.state.produit.SellingPriceOfUnit} type="text" />
+                            </div>
+                            <div id="typevente" className="row">
+                                <div className="col-lg-3 col-md-3 col-xs-3 col-sm-3" >
+                                    <span style={{marginRight:"1.2em"}}><input type="radio" name="ventetype" value="vd"/><label>Vente directe</label></span>
+                                </div>
+                                <div className="col-lg-3 col-md-3 col-xs-3 col-sm-3" >
+                                    <ModalIpm />
+                                </div>
                             </div>
                             <div>
                                 <button onClick={()=>this.addProd(this.state.produit)} className="btn btn-success btn-block">Ajouter</button>
@@ -278,3 +326,140 @@ class Vente extends Component {
 }
  
 export default Vente;
+class ModalIpm extends Component{
+    constructor(){
+        super();
+        this.state={
+            show:false,
+            ipm:[],
+            client:{
+                prenom:"",
+                nom:"",
+                matricule:""
+            },
+            ipmc:{
+                idIpm:0,
+                ipm:""
+            },
+        };
+    }
+    modal(event){
+        event.preventDefault()
+        this.getIpm();
+        this.setState({show:true});
+    }
+    handleClose(event) {
+        event.preventDefault()
+        this.setState({ show: false });
+        document.getElementById("ipm").checked=true;
+    }
+    getIpm(){
+        let idShop=sessionStorage.getItem("idShop");
+        fetch(link+'/ipm/getIpm',{
+            method:"post",
+            body:"idShop="+idShop,
+            headers:{
+                'Content-Type':'application/x-www-form-urlencoded'
+            }
+        }).then(rep=>rep.json()).then(json =>{
+            console.log(json);
+            this.setState({ipm:json});
+        })
+    }
+    displayIpm(){
+        let ipm=this.state.ipm.map((el,i)=>{
+            return <option key={i} value={JSON.stringify(el)}>{el.ipm}</option>;
+        })
+        return ipm;
+    }
+    handlePrenom(event){
+        event.preventDefault();
+        let c=this.state.client;
+        c.prenom=event.target.value;
+        this.setState({client:c});
+    }
+    handleNom(event){
+        event.preventDefault();
+        let c=this.state.client;
+        c.nom=event.target.value;
+        this.setState({client:c});
+    }
+    handleMatricule(event){
+        event.preventDefault();
+        let c=this.state.client;
+        c.matricule=event.target.value;
+        this.setState({client:c});
+    }
+    validerIpm(event){
+        event.preventDefault();
+        if(this.state.client.prenom!=="" && this.state.client!=="" && this.state.client!=="" && this.state.ipmc.idIpm!==0 && this.state.ipmc.ipm!==""){
+            sessionStorage.setItem("client",JSON.stringify(this.state.client));
+            sessionStorage.setItem("ipmc",this.state.ipmc);
+            this.handleClose(event);
+        }else{
+            alert("veuillez remplire tout les champs.");
+        }
+    }
+    choisireIpm(event){
+        event.preventDefault();
+        this.setState({ipmc:event.target.value});
+    }
+    render(){
+        return(
+        <div>
+            <span><input onClick={(event)=>this.modal(event)} id="ipm" type="radio" name="ventetype" value="ipm" /><label>Ipm</label></span>
+             <Modal show={this.state.show} >
+            <Modal.Header closeButton>
+              <Modal.Title></Modal.Title>
+            </Modal.Header>
+            <Modal.Body>
+                <div>
+                    <form >
+                        <placeholder>
+                            <legend>Informations IPM</legend>
+                            <div className="form-group">
+                                <select onChange={(event)=>this.choisireIpm(event)} value={this.state.ipmc} className="form-control">
+                                    <option value="">--choisir ipm--</option>
+                                    {this.displayIpm()}
+                                </select>
+                            </div>
+                        </placeholder>
+                        
+                    </form>
+                </div>
+                <hr />
+                <div>
+                    <form>
+                        <placeholder>
+                            <legend>Informations clients</legend>
+                            <div className="form-group">
+                                <span>Prenom :</span>
+                                <input value={this.state.client.prenom} onChange={(event)=>this.handlePrenom(event)} type="text" className="form-control" />
+                            </div>
+                            <div className="form-group">
+                                <span>Nom :</span>
+                                <input value={this.state.client.nom} onChange={(event)=>this.handleNom(event)} type="text" className="form-control" />
+                            </div>
+                            <div className="form-group">
+                                <span>Matricule :</span>
+                                <input value={this.state.client.matricule} onChange={(event)=>this.handleMatricule(event)} type="text" className="form-control" />
+                            </div>
+                        </placeholder>
+                    </form>
+                </div>
+            </Modal.Body>
+            <Modal.Footer>
+              <Button variant="success" onClick={(event)=>this.validerIpm(event)}>
+                Valider
+              </Button>
+              <Button variant="danger" onClick={(event)=>{this.handleClose(event);document.getElementById("ipm").checked=false}}>
+                Annuler
+              </Button>
+            </Modal.Footer>
+          </Modal>
+        </div>
+    
+        )
+    }
+    
+}

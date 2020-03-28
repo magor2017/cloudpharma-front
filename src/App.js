@@ -9,6 +9,7 @@ import { tsConstructorType } from '@babel/types';
 import Content from './components/vendeur/content';
 import Connexion from './components/login/connexion';
 import AcceuilSup from './components/superviseur/acceuil';
+import Ipm from './components/ipm/accueil';
 
 class App extends Component {
   state = {  }
@@ -21,6 +22,7 @@ class App extends Component {
           <Route exact path="/vendeur" component={Accueil} />
           <Route exact path="/login" component={Login} />
           <Route exact path="/superviseur" component={AcceuilSup} />
+          <Route exact path="/ipm" component={Ipm} />
         </Switch>
       </Router>
      );

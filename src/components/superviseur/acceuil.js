@@ -7,6 +7,8 @@ import Compte from '../superviseur/compte';
 import Fournisseur from './fournisseur'
 import axios from 'axios';
 import link from '../link';
+import Client from '../client/client';
+import IpmSup from './ipm';
 class AcceuilSup extends Component {
     constructor(){
         super();
@@ -85,6 +87,8 @@ class AcceuilSup extends Component {
                             <Route exact path="/superviseur/compte" component={Compte} />
                             <Route exact path="/superviseur/fournisseur" component={Fournisseur} />
                             <Route exact path="/superviseur/stock/contentstock" component={ContentStock} />
+                            <Route exact path="/superviseur/client" component={Client} />
+                            <Route exact path="/superviseur/ipm" component={IpmSup} />
                         </Switch>
                     </div>
                 </div>
@@ -141,10 +145,20 @@ function P(){
                     
                 </div>
                 <div style={{margin:"1.5em",width:"20%",display:"inline-block"}}>
-                    <div style={{color:"#066A74",backgroundColor:"white",padding:"0.5em",textAlign:"center",borderRadius:"0.5em"}}>
-                        <div><i class="far fa-user fa-2x"></i></div>
-                        <span>Clients</span>
-                    </div>
+                    <Link to="/superviseur/client">
+                        <div style={{color:"#066A74",backgroundColor:"white",padding:"0.5em",textAlign:"center",borderRadius:"0.5em"}}>
+                            <div><i class="far fa-user fa-2x"></i></div>
+                            <span>Clients</span>
+                        </div>
+                    </Link>
+                </div>
+                <div style={{margin:"1.5em",width:"20%",display:"inline-block"}}>
+                    <Link to="/superviseur/ipm">
+                        <div style={{color:"#066A74",backgroundColor:"white",padding:"0.5em",textAlign:"center",borderRadius:"0.5em"}}>
+                            <div><i class="far fa-user fa-2x"></i></div>
+                            <span>Ipm</span>
+                        </div>
+                    </Link>
                 </div>
             </div>
              

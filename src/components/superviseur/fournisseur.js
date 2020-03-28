@@ -15,11 +15,11 @@ class Fournisseur extends Component {
                 <Router>
                     <div style={{marginTop:"1.5em"}}>
                         <ul className="menuul">
-                            <Link to="/superviseur/fournisseur">
-                                <li className="menuli" >Liste Fournisseur</li>
+                            <Link className="menuli" to="/superviseur/fournisseur">
+                                <li  >Liste Fournisseur</li>
                             </Link> 
-                            <Link to="/superviseur/listeFourniseur">
-                                <li  className="menuli" >Nouveau Fournisseur</li>
+                            <Link className="menuli" to="/superviseur/listeFourniseur">
+                                <li  >Nouveau Fournisseur</li>
                             </Link>
                             
                         </ul>

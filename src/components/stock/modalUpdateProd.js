@@ -46,10 +46,16 @@ class ModalUpdate extends Component {
           if(parseInt(this.state.ecomquantite)>0 && this.state.produit.Peremption!="" && this.state.produit.Peremption!=undefined){
                 fetch(link+"/ecom/setProductToEcom",{
                 method:"POST",
-                body:"id="+id+"&idShop="+sessionStorage.getItem("idShop")+"&idUser="+sessionStorage.getItem("idUser")+"&quantite="+this.state.ecomquantite+"&peremption="+this.formatDate(this.state.produit.Peremption),
+                body:"id="+id+"&idShop="+sessionStorage.getItem("idShop")+"&idUser="+sessionStorage.getItem("id")+"&quantite="+this.state.ecomquantite+"&peremption="+this.formatDate(this.state.produit.Peremption),
                 headers:{"Content-Type": "application/x-www-form-urlencoded"}
             }).then(rep=> rep.json()).then(json=>{
                 console.log(json);
+                if(json.rep){
+                    alert("produit mis en vente");
+                    this.setState({show:false});
+                }else{
+                    alert("une erreur est survenue lors de la mis en vente.");
+                }
             });
         }else{
             if(parseInt(this.state.ecomquantite)<=0){
@@ -276,8 +282,9 @@ class ModalUpdate extends Component {
         this.setState({produit:p});
     }
     formatDate(date){
-        let d=date.split('-');
-        return d[2]+"/"+d[1]+"/"+d[0];
+       // let d=date.split('-');
+       // return d[2]+"/"+d[1]+"/"+d[0];
+        return date;
     }
     handleQuantiteEcom(event){
         event.preventDefault();
