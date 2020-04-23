@@ -2,6 +2,11 @@ import React, { Component } from 'react';
 import './fournisseur.css';
 import {BrowserRouter as Router,Link,Route,Switch,Redirect } from 'react-router-dom';
 import { tsConstructorType } from '@babel/types';
+import logoUbipharm from '../../images/fournisseur/logoUbipharm.png';
+import logoDuopharm from '../../images/fournisseur/logoDuopharm.jpg';
+import logoLaborex from '../../images/fournisseur/logoLaborex.jpg';
+import logosodiPharm from '../../images/fournisseur/logoSodipharm.jpg';
+import logoPna from '../../images/fournisseur/logopna.jpg';
 import link from '../link';
 
 class Fournisseur extends Component {
@@ -65,31 +70,52 @@ class Liste extends Component{
             this.setState({fournisseurs:JSON.parse(text).liste})
         });
     }
+    old(){
+        return(
+        <table className="table table-striped table-condensed">
+        <thead style={{backgroundColor:"white",color:"#1F838D"}}>
+            <tr>
+                <th>Nom</th>
+                <th>Adress</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody style={{backgroundColor:"#CFD4FF",color:"white"}}>
+            {this.state.fournisseurs.map((el,i)=>{
+                return(
+                    <tr key={i}>
+                        <th>{el.nom}</th>
+                        <th>{el.adresse}</th>
+                        <th><button className="btn btn-success">modifier</button></th>
+                    </tr>
+                )
+            })}
+        </tbody>
+
+    </table>
+        )
+    }
     render(){
         
         return(
-            <div>
-                <table className="table table-striped table-condensed">
-                    <thead style={{backgroundColor:"white",color:"#1F838D"}}>
-                        <tr>
-                            <th>Nom</th>
-                            <th>Adress</th>
-                            <th>Action</th>
-                        </tr>
-                    </thead>
-                    <tbody style={{backgroundColor:"#CFD4FF",color:"white"}}>
-                        {this.state.fournisseurs.map((el,i)=>{
-                            return(
-                                <tr key={i}>
-                                    <th>{el.nom}</th>
-                                    <th>{el.adresse}</th>
-                                    <th><button className="btn btn-success">modifier</button></th>
-                                </tr>
-                            )
-                        })}
-                    </tbody>
-
-                </table>
+            <div className="row">
+               <div  className="col-lg-5 col-md-5 col-xs-12 col-sm-12 four">
+                   <img className="img" src={logoUbipharm} alt="logoubipharm" />
+               </div>
+               
+               <div className="col-lg-5 col-md-5 col-xs-12 col-sm-12 four">
+                   <img className="img"  src={logoDuopharm} alt="logoUbipharm" />
+               </div>
+               <div className="col-lg-5 col-md-5 col-xs-12 col-sm-12 four">
+                   <img className="img"  src={logoLaborex} alt="logoLaborex" />
+               </div>
+               <div className="col-lg-5 col-md-5 col-xs-12 col-sm-12 four">
+                   <img className="img"  src={logosodiPharm} alt="logoUbipharm" />
+               </div>
+               <div className="col-lg-5 col-md-5 col-xs-12 col-sm-12 four">
+                   <img className="img"  src={logoPna} alt="logoUbipharm" />
+               </div>
+               
             </div>
         )
     }

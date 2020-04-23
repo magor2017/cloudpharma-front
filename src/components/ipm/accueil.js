@@ -4,7 +4,7 @@ import axios from 'axios';
 import link from '../link';
 import './accueil.css';
 import logocp from '../login/images/SNETC2.png';
-import  Facteur from './facture';
+import  Facture from './facture';
 import Correcteur from './correcteur';
 class Ipm extends Component {
     state = {  }
@@ -60,7 +60,7 @@ class Ipm extends Component {
                 </div>
                 <div id="content" className="col-lg-9 col-md-9 col-xs-12 col-sm-12">
                      <Switch>
-                         <Route exact path="/ipm" component={Facteur} />
+                         <Route exact path="/ipm" component={Facture} />
                         <Route exact path="/ipm/correcteur" component={Correcteur} />
                      </Switch>
                 </div>

@@ -118,7 +118,7 @@ class Accueil extends Component {
     }
     render() { 
         if(this.state.con){
-            return <Redirect to="/login" />
+            return <Redirect to="/" />
          }
         return ( 
             <Router>

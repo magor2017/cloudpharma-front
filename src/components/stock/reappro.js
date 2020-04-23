@@ -290,9 +290,9 @@ class Reappro extends Component {
                     </form>
                     <form style={{width:"90%",marginLeft:"auto",marginRight:"auto"}} className="form-inline">
                         <label>prix d'achat</label>
-                        <input onChange={(event)=>this.handlePuchasePrice(event)} className="form-control" value={this.state.produit.PurchasePriceOfUnit} type="text"/>
+                        <input  className="form-control" value={this.state.produit.PurchasePriceOfUnit} type="text"/>
                         <label>Prix de vente</label>
-                        <input className="form-control" onChange={(event)=>this.handleSellingPrice(event)} value={this.state.produit.SellingPriceOfUnit} type="text" />
+                        <input className="form-control" value={this.state.produit.SellingPriceOfUnit} type="text" />
 
                     </form>
                 </div>

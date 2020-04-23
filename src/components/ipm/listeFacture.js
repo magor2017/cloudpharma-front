@@ -35,11 +35,33 @@ class ListeFacture extends Component {
                 <td>{i+1}</td>
                 <td>{JSON.parse(el.shop).shop}</td>
                 <td>{JSON.parse(el.client).prenom+" "+JSON.parse(el.client).nom}</td>
-                <td><Detail style={{display:"inline"}} info={el} /><input style={{display:"inline"}} type="button" className="btn btn-success" value="renvoyer" /></td>
+                <td><Detail style={{display:"inline"}} info={el} /><input style={{display:"inline"}} type="button" onClick={(event)=>this.renvoyer(event,el)} className="btn btn-success" value="renvoyer" /></td>
             </tr>
             )
         })
         return l;
+    }
+    renvoyer(event,el){
+        event.preventDefault();
+        console.log(el);
+        console.log(JSON.stringify(el));
+        if(window.confirm("Etes-vous sure de vouloir renvoyer cette facture?")){
+            fetch(link+"/ipm/renvoyerFacture",{
+                method:"post",
+                body:"facture="+JSON.stringify(el),
+                headers:{
+                    "content-type":"application/x-www-form-urlencoded"
+                }
+
+            }).then(rep =>rep.json()).then(text=>{
+                if(text.rep===1){
+                    this.getListeFacture();
+                    alert("facture renvoyee.");
+                }else{
+                    alert("veuillez traiter tout les produits de cette facture.")
+                }
+            });
+        }
     }
     render() { 
         return ( 
@@ -190,7 +212,7 @@ class Detail extends Component{
                         "Content-Type":"application/x-www-form-urlencoded"
                     }
                 }).then(rep =>rep.json()).then(text =>{
-                    if(text.rep1 && text.rep2){
+                    if(text.rep===1){
                         alert("Demande envoyé.")
                     }else{
                         alert("problem au niveau du serveur.");
@@ -236,6 +258,7 @@ class Detail extends Component{
                                 <th>quantite</th>
                                 <th>prix</th>
                                 <th>prix total</th>
+                                <th>note expert</th>
                                 <th>action</th>
                             </tr>
                         </thead>
@@ -248,6 +271,7 @@ class Detail extends Component{
                                         <td>{p.quantite}</td>
                                         <td>{p.SellingPriceOfUnit}</td>
                                         <td>{p.quantite*p.SellingPriceOfUnit}</td>
+                                        <td>{p.note}</td>
                                         <td><input onClick={(event)=>this.accepter(event,p)} type="button" value="accepter" className="btn btn-success" /><input onClick={(event)=>this.reject(event,p)} type="button" value="rejeter" className="btn btn-danger" /><input onClick={(event)=>this.expertise(event,p)} type="button" className="btn btn-primary" value="expertise" /></td>
                                     </tr>
                                 )

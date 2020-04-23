@@ -9,6 +9,7 @@ import axios from 'axios';
 import link from '../link';
 import Client from '../client/client';
 import IpmSup from './ipm';
+import Accueilstore from '../store/accueil';
 class AcceuilSup extends Component {
     constructor(){
         super();
@@ -30,6 +31,10 @@ class AcceuilSup extends Component {
                 <div><i style={{"display":"inline-block"}} className="far fa-user-circle fa-2x"></i></div>
                 <a style={{"display":"inline-block"}}><Link to="/superviseur/profil">Profil</Link></a>
             </div>,
+            <div style={{"color":"#066A74","backgroundColor":"white","border":"1px solid #066A74","padding":"20px","textAlign":"center",cursor:"pointer"}}>
+            <div><i style={{"display":"inline-block"}} className="fas fa-store fa-2x"></i></div>
+            <a style={{"display":"inline-block"}}><Link to="/superviseur/store">E-commerce</Link></a>
+        </div>,
         
         ];
         return m;
@@ -73,7 +78,7 @@ class AcceuilSup extends Component {
     }
     render() { 
         if(this.state.con){
-            return <Redirect to="/login" />
+            return <Redirect to="/" />
          }
         return ( 
             <Router>
@@ -89,6 +94,7 @@ class AcceuilSup extends Component {
                             <Route exact path="/superviseur/stock/contentstock" component={ContentStock} />
                             <Route exact path="/superviseur/client" component={Client} />
                             <Route exact path="/superviseur/ipm" component={IpmSup} />
+                            <Route exact path="/superviseur/store" component={Accueilstore} />
                         </Switch>
                     </div>
                 </div>
