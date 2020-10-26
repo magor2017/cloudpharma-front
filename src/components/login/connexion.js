@@ -6,6 +6,9 @@ import link from '../link';
 import { Button,Modal } from 'react-bootstrap';
 import axios from 'axios';
 import {BrowserRouter as Router,Link,Route,Switch,Redirect} from 'react-router-dom';
+import DateTimePicker from 'react-datetime-picker';
+import Loader from 'react-loader-spinner';
+import "react-loader-spinner/dist/loader/css/react-spinner-loader.css";
 class Connexion extends Component {
     constructor(){
         super();
@@ -18,6 +21,7 @@ class Connexion extends Component {
             username:"",
             password:"",
             pharmacie:"",
+            
         }
     }
     
@@ -138,6 +142,7 @@ class Connexion extends Component {
                         </div>
                     </div>
                 <div style={{padding:"0px"}} id="body" >
+                    <div><LettreGarrantie /></div>
                     <div id="left">
                         <img src={group15} alt="cloud" />
                     </div>
@@ -153,6 +158,138 @@ class Connexion extends Component {
 }
  
 export default Connexion;
+class LettreGarrantie extends Component{
+    constructor(){
+        super();
+        this.state={
+            show:false,
+            Date: null,
+            date:null,
+            matricule:"",
+            idIpm:"",
+            idStructure:"",
+            timeOute:1,
+            ipm:[]
+            
+        }
+        this.getIpm();
+    }
+    onchange = date => {
+        let d=date.toLocaleDateString().split('/');
+        let day=d[2]+'-'+d[1]+'-'+d[0];
+        let datetime=day+' '+date.toLocaleTimeString();
+        //let day=date.getFullYear()+'-'+date.getMonth()+'-'+date.getUTCDay();
+        console.log(datetime);
+        this.setState({date:date});
+       return this.setState({ Date:datetime });
+    }
+    show(event){
+        event.preventDefault();
+        this.setState({show:true});
+    }
+    handleMatricule(event){
+        event.preventDefault();
+        this.setState({matricule:event.target.value});
+        console.log(this.state.matricule);
+    }
+    handleStructure(event){
+        event.preventDefault();
+        this.setState({idStructure:event.target.value});
+    }
+    handeIdIpm(event){
+        event.preventDefault();
+        this.setState({idIpm:event.target.value});
+        console.log(this.state.idIpm);
+    }
+    hide(event){
+        event.preventDefault();
+        this.setState({show:false});
+    }
+    getIpm(){
+        fetch(link+'/ipm/recupereIpm',{
+            method:'get'
+        }).then(rep =>rep.json()).then(tontou=>{
+            console.log(tontou);
+            this.setState({ipm:tontou});
+        })
+    }
+    save(event){
+        event.preventDefault();
+       // console.log(this.state.date);
+        //console.log(this.state.date.toLocaleDateString());
+        //console.log(this.state.date.toLocaleTimeString());
+        this.setState({timeOute:1000000});
+        if(this.state.matricule!=="" && this.state.idIpm!=="" && this.state.idStructure!==""){
+            fetch(link+'/ipm/newlettredegarantie',{
+                method:"post",
+                body:"idIpm="+this.state.idIpm+"&idStructure="+this.state.idStructure+"&date="+this.state.Date+"&matricule="+this.state.matricule,
+                headers:{
+                    "content-type":"application/x-www-form-urlencoded"
+                }
+            }).then(rep=>rep.text()).then(tontou=>{
+                console.log(tontou)
+                this.setState({timeOute:2000});
+                alert("demande enregistré");
+            });
+        }else{
+            alert('veuillez remplir les champs vide.');
+        }
+    }
+    render(){
+        return(
+            <div>
+                <button onClick={(event)=>this.show(event)} className="btn btn-success">Lettre de garrantie</button>
+                <Modal size="lg"  show={this.state.show}>
+                    <Modal.Header onClick={(event)=>this.hide(event)} closeButton>
+                    <Modal.Title ><b style={{textAlign:"center"}}>Demande de lettre de garrantie</b> </Modal.Title>
+                    </Modal.Header>
+                    <Modal.Body>
+                    <Loader
+                            style={{"position":"absolute","top":"40%","left":"30%"}}
+                            type="Puff"
+                            color="#00BFFF"
+                            height={100}
+                            width={100}
+                            timeout={this.state.timeOute} //3 secs
+                    
+                        />
+                        <form>
+                            <div className="form-group">
+                                <span>Matricule</span>
+                                <input onChange={(event)=>this.handleMatricule(event)} type="text" className="form-control" />
+                            </div>
+                            <select onChange={(event)=>this.handeIdIpm(event)} className="form-control">
+                                <option value="0">Veuillez Choisire votre ipm</option>
+                                {
+                                    this.state.ipm.map((el,i)=>{
+                                        return(<option key={i} value={el.id}>{el.ipm}</option>)
+                                    })
+                                }
+                                
+                            </select><br/>
+                            <select onChange={(event)=>this.handleStructure(event)} className="form-control">
+                                <option value="0">Veuillez Choisire votre structure sanitaire</option>
+                                <option value="1">Chez alice</option>
+                                <option value="2">Chez Mbeurgou</option>
+                                <option value="3">cloudpharma</option>
+                            </select><br/>
+                            <div>
+                                <DateTimePicker
+                                onChange={this.onchange}
+                                value={this.state.date}
+                                />
+                            </div><br/>
+                            <button onClick={(event)=>this.save(event)} className="btn btn-success">Valider</button>
+                            <button onClick={(event)=>this.hide(event)} className="btn btn-danger">Annuler</button>
+                        </form>
+                    </Modal.Body>
+                    <Modal.Footer>
+                    </Modal.Footer>
+                </Modal>
+            </div>
+        )
+    }
+}
 class Log extends Component{
     constructor(){
         super();

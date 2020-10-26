@@ -6,6 +6,8 @@ import './accueil.css';
 import logocp from '../login/images/SNETC2.png';
 import  Facture from './facture';
 import Correcteur from './correcteur';
+import Partenaire from './partenaire';
+import LettreGarantie from './lettreGarantie';
 class Ipm extends Component {
     state = {  }
     deconnexion(event){
@@ -52,6 +54,14 @@ class Ipm extends Component {
                         <div><i style={{"display":"inline-block"}} className="fas fa-user-md fa-2x"></i></div>
                         <a style={{"display":"inline-block"}}><Link to="/ipm/correcteur/" >Correcteures</Link></a>
                     </div>
+                    <div style={{"color":"#066A74","backgroundColor":"white","border":"1px solid #066A74","padding":"20px","textAlign":"center"}}>
+                        <div><i style={{"display":"inline-block"}} className="fas fa-user-md fa-2x"></i></div>
+                        <a style={{"display":"inline-block"}}><Link to="/ipm/partenaire/" >Partenaires</Link></a>
+                    </div>
+                    <div style={{"color":"#066A74","backgroundColor":"white","border":"1px solid #066A74","padding":"20px","textAlign":"center"}}>
+                        <div><i style={{"display":"inline-block"}} className="fas fa-user-md fa-2x"></i></div>
+                        <a style={{"display":"inline-block"}}><Link to="/ipm/lettregarantie/" >Demande de lettre de garantie</Link></a>
+                    </div>
                     <div onClick={(event)=>this.deconnexion(event)} style={{"color":"white","backgroundColor":"red","padding":"20px","textAlign":"center","cursor":"pointer"}}>
                         <div><i className="fas fa-sign-out-alt fa-2x"></i></div>
                         <span>Deconnexion</span>
@@ -62,6 +72,8 @@ class Ipm extends Component {
                      <Switch>
                          <Route exact path="/ipm" component={Facture} />
                         <Route exact path="/ipm/correcteur" component={Correcteur} />
+                        <Route exact path="/ipm/partenaire" component={Partenaire} />
+                        <Route exact path="/ipm/lettregarantie" component={LettreGarantie} />
                      </Switch>
                 </div>
             </div>
