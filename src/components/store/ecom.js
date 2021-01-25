@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import Produit from './produit';
 import link from '../link';
+//import { Table } from 'antd';
 class Ecom extends Component {
     constructor(){
         super();
@@ -29,13 +30,38 @@ class Ecom extends Component {
        })
    }
     render() { 
+        const columnprod=[
+            {
+                title:'produit',
+                width:100,
+                dataIndex:'prod',
+                key:'prod'
+            },
+            {
+                title:'quantite',
+                width:100,
+                dataIndex:'qt',
+                key:'qt'
+            },
+            {
+                title:'prix',
+                width:100,
+                dataIndex:'prix',
+                key:'prix'
+            },
+            {
+                title:'action',
+                width:100,
+                
+            }
+        ]
         return ( 
             <div>
                 <div style={{marginLeft:"2em",textAlign:"center",marginBottom:"0.3em"}}>
                         <input style={{width:"80%",borderRadius:"2em"}} type="search" placeholder=" Taper le nom d'un produit" />
                 </div>
                 <div style={{backgroundColor:"white",marginLeft:"2em"}} className="row">
-                    {this.displayProduct()}
+                    
                 </div>
             </div>
          );

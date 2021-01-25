@@ -126,7 +126,7 @@ class Accueil extends Component {
                     <div style={{"padding":"0px"}}  className="col-lg-2 col-md-2 col-xs-2 col-sm-2">{this.entete()}<div>{this.state.menu}</div>{this.heade()}</div>
                     <div  className="col-lg-9 col-md-9 col-xs-9 col-sm-9">
                         <Switch>
-                            <Route exact path="/vendeur" component={P} />
+                            <Route exact path="/vendeur" component={Accueilstore} />
                             <Route exact path="/vendeur/login" component={Login} />
                             <Route exact path="/vendeur/ac" component={Ac} />
                             <Route exact path="/vendeur/content" component={Content} />

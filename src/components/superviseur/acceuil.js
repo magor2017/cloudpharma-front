@@ -86,7 +86,7 @@ class AcceuilSup extends Component {
                     <div className="col-lg-2 col-md-2 col-xs-2 col-sm-2"><div>{this.menu()}</div>{this.heade()}</div>
                     <div className="col-lg-9 col-md-9 col-xs-9 col-sm-9">
                         <Switch>
-                            <Route exact path="/superviseur" component={P} />
+                            <Route exact path="/superviseur" component={Accueilstore} />
                             <Route exact path="/superviseur/vente/content" component={Content} />
                             <Route exact path="/superviseur/profil" component={Profil} />
                             <Route exact path="/superviseur/compte" component={Compte} />
