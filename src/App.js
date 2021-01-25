@@ -1,6 +1,7 @@
 import React ,{Component} from 'react';
 import logo from './logo.svg';
 import './App.css';
+import 'antd/dist/antd.css'; // or 'antd/dist/antd.less'
 import 'bootstrap/dist/css/bootstrap.min.css';
 import Accueil  from './components/vendeur/accueil';
 import Login  from './components/login/login';
