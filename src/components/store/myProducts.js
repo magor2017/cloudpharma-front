@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
-import link from '../link';
+import { post } from '../service';
+import { Table,Button} from 'antd';
 class MyProducts extends Component {
     constructor(){
         super();
@@ -10,7 +11,15 @@ class MyProducts extends Component {
     }
     getProducts(){
         let idShop=sessionStorage.getItem("idShop");
-        fetch(link+"/ecom/getMyProducts",{
+        let body="idPharm="+idShop;
+        post('/produit/getMyProducts',body).then(rep=>{
+            console.log(rep);
+            let p=rep.data.pav.map((el,i)=>{
+                return {produit:el.nom,qt:el.quantite,qtr:el.qtr,pu:el.newPrice,pt:el.quantite*el.newPrice,peremption:el.peremption};
+            });
+            this.setState({products:p});
+        });
+       /* fetch(link+"/ecom/getMyProducts",{
             method:"POST",
             body:"idShop="+idShop,
             headers:{
@@ -19,7 +28,7 @@ class MyProducts extends Component {
         }).then(rep =>rep.json()).then(json=>{
             console.log(json);
             this.setState({products:json});
-        });
+        });*/
     }
     displayProducts(){
         let p=this.state.products.map((p,i)=>{
@@ -42,21 +51,54 @@ class MyProducts extends Component {
         return (prix-(prix*5)/100);
     }
     render() { 
+        const columns=[
+            {
+                title:'Produit',
+                dataIndex:'produit',
+                key:'produit'
+            },
+            {
+                title:'Quantite',
+                dataIndex:'qt',
+                key:'qt'
+            },
+            {
+                title:'Quantite restant',
+                dataIndex:'qtr',
+                key:'qtr'
+            },
+            {
+                title:'P.u',
+                dataIndex:'pu',
+                key:'pu'
+            },
+            {
+                title:'P.t',
+                dataIndex:'pt',
+                key:'pt'
+            },
+            {
+                title:'Peremption',
+                dataIndex:'peremption',
+                key:'peremption'
+            },
+            {
+                title:'Action',
+                dataIndex:'action',
+                key:'action',
+                render:()=>{
+                    return(
+                        <>
+                            <Button type="danger">Annuler</Button>
+                            <Button type="primary">Modifier</Button>
+                        </>
+                    );
+                }
+            }
+        ];
         return ( 
             
-            <table style={{backgroundColor:"white",color:"#1F838D"}} className="table table-striped table-condensed">
-                <thead>
-                        <tr>
-                            <th>Product</th>
-                            <th>Quantite</th>
-                            <th>P.U</th>
-                            <th>P.T</th>
-                            <th>Peremption</th>
-                            <th>Actions</th>
-                        </tr>
-                    </thead>
-                {this.displayProducts()}
-            </table>
+            <Table columns={columns} dataSource={this.state.products}></Table>
          );
     }
 }

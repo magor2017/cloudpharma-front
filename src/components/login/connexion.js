@@ -418,6 +418,7 @@ class Log extends Component{
                         sessionStorage.setItem("level",rep.data.level);
                         sessionStorage.setItem("idShop",rep.data.idShop);//id de la boutique
                         sessionStorage.setItem("vente",1);
+                        sessionStorage.setItem("idZone",rep.data.idZone);
                         switch(parseInt(rep.data.level)){
                             case 1:{
                                 this.setState({compte:"/vendeur"})

@@ -9,14 +9,17 @@ import MyProduct from './myProducts';
 import Iban from './iban';
 import Historique from './historique';
 import {BrowserRouter as Router,Link,Route,Switch} from 'react-router-dom';
+import 'antd/dist/antd.css';
+import Vendre from './vendre';
 class Accueilstore extends Component {
-    constructor(){
-        super();
+    constructor(props){
+        super(props);
         this.state={
             prod:[],
             solde:null,
             level:sessionStorage.getItem("level")==="1"?"/vendeur":"/superviseur",
         };
+       // sessionStorage.setItem('solde',20000);
         this.getSolde();
        // this.getProductEcom();
         
@@ -35,23 +38,11 @@ class Accueilstore extends Component {
         })
     }
     
-    log(){
-                  return(
-                  <div><div className="col-lg-4 col-md-4 col-xs-12 col-sm-12">
-                        <Produit src="http://127.0.0.1:3000/images/laboratory-313864_640.jpg" />
-                    </div>
-                    <div className="col-lg-4 col-md-4 col-xs-12 col-sm-12">
-                        <Produit src="http://127.0.0.1:3000/images/medications-257346_640.jpg" />
-                    </div>
-                    <div className="col-lg-4 col-md-4 col-xs-12 col-sm-12">
-                        <Produit src="http://127.0.0.1:3000/images/medications-257349_640.jpg" />
-                    </div>
-                    </div>);
-    }
+    
     getSolde(){
         let idShop=sessionStorage.getItem("idShop");
         console.log(idShop);
-        fetch(link+"/ecom/getSolde",{
+        fetch(link+"/produit/getSolde",{
             method:"POST",
             body:"idShop="+parseInt(sessionStorage.getItem("idShop")),
             headers:{
@@ -59,8 +50,8 @@ class Accueilstore extends Component {
             }
         }).then(rep =>rep.json()).then(t =>{
            console.log(t);
-           this.setState({solde:t.solde});
-           console.log(this.state.solde);
+           this.setState({solde:t});
+           //console.log(this.state.solde);
            //773893613
        })
 
@@ -69,7 +60,7 @@ class Accueilstore extends Component {
         return ( 
             <Router>
                 <div>
-                    <span style={{fontSize:"1.5em",color:"black",backgroundColor:this.state.solde>=0?"white":"red"}}><b>Solde : {this.state.solde} FCFA</b></span>
+                    <span style={{fontSize:"1.5em",color:"black",backgroundColor:"white"}}><b>Solde : {this.state.solde} FCFA</b></span>
                 </div>
                 <div style={{paddingTop:"0.2em"}}>
                     <ul id="menustore">
@@ -83,7 +74,12 @@ class Accueilstore extends Component {
                 
                     
                 <Switch>
-                    <Route exact path={this.state.level+"/store"} component={Ecom} />
+                    <Route exact path={this.state.level}   >
+                        <Ecom data="rasta" getSolde={()=>this.getSolde()} />
+                    </Route>
+                    <Route exact path={this.state.level+"/store"}   >
+                        <Ecom data="rasta" getSolde={()=>this.getSolde()} />
+                    </Route>
                     <Route exact path={this.state.level+"/store/myproducts"} component={MyProduct} />
                     <Route exact path={this.state.level+"/store/iban"} component={Iban}/>
                     <Route exact path={this.state.level+"/store/historique"} component={Historique} />

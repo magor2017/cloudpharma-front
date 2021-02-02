@@ -1,6 +1,9 @@
 import React,{Component} from 'react';
 import link from '../link';
 import { thisExpression } from '@babel/types';
+import { post } from '../service';
+import { Table } from 'antd'; 
+//import { Table } from 'react-bootstrap';
 class Historique extends Component {
     constructor(){
         super();
@@ -11,7 +14,15 @@ class Historique extends Component {
     }
     getCommandes(){
         let idShop=sessionStorage.getItem("idShop");
-        fetch(link+"/ecom/getCommandes",{
+        let body="idPharm="+idShop;
+        post('/produit/getBuyedProducts',body).then(rep=>{
+            console.log(rep.data.pa);
+           /* let pa=rep.data.pa.map((el,i)=>{
+                return {produit:el.}
+            });*/
+            this.setState({commandes:rep.data.pa});
+        });
+       /* fetch(link+"/ecom/getCommandes",{
             method:"POST",
             body:"idShop="+idShop,
             headers:{
@@ -20,7 +31,7 @@ class Historique extends Component {
         }).then(rep=>rep.json()).then(json=>{
             this.setState({commandes:json});
             console.log(json);
-        })
+        })*/
 
     }
     displayEtat(etat){
@@ -74,10 +85,46 @@ class Historique extends Component {
         );
     }
     render() { 
+        const columns=[
+            {
+                title:"Produit",
+                dataIndex:"produit",
+                key:"produit"
+            },
+            {
+                title:"Quantite",
+                dataIndex:"qt",
+                key:"qt"
+            },
+            {
+                title:"P.u",
+                dataIndex:"pu",
+                key:"pu"
+            },
+            {
+                title:"P.t",
+                dataIndex:"pt",
+                key:"pt"
+            },
+            {
+                title:"Etat",
+                dataIndex:"etat",
+                key:"etat",
+                render:(text,record)=>{
+                    if(record.etat===0){
+                        return <span style={{color:'red'}}>en cour de traitement</span>;
+                    }
+                    if(record.etat===1){
+                        return <span style={{color:'yellow'}}>avec le livreur</span>;
+                    }
+                    if(record.etat===2){
+                        return <span style={{color:'green'}}>livré</span>;
+                    }
+                }
+            }
+        ];
         return (
-            <div>
-                {this.displayCommandes()}
-            </div>
+                <Table columns={columns} dataSource={this.state.commandes} ></Table>
           );
     }
 }
