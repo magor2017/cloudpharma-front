@@ -403,6 +403,9 @@ class Log extends Component{
         let id=this.state.id;
         let password=this.state.password;
         let body = {"id":id, "password": password};
+
+
+        
         if(id!==undefined && id!=="" && password!=undefined && password!==""){
             axios({
                 url:link+'/login/connexion',
@@ -459,6 +462,8 @@ class Log extends Component{
 
             }
         }
+
+        
         
 }
     inscription(event,val){
